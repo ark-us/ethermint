@@ -108,6 +108,8 @@ import (
 	feemarkettypes "github.com/tharsis/ethermint/x/feemarket/types"
 
 	// Force-load the tracer engines to trigger registration due to Go-Ethereum v1.10.15 changes
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core/vm"
 	_ "github.com/ethereum/go-ethereum/eth/tracers/js"
 	_ "github.com/ethereum/go-ethereum/eth/tracers/native"
 )
@@ -351,6 +353,7 @@ func NewEthermintApp(
 		appCodec, keys[evmtypes.StoreKey], tkeys[evmtypes.TransientKey], app.GetSubspace(evmtypes.ModuleName),
 		app.AccountKeeper, app.BankKeeper, app.StakingKeeper, app.FeeMarketKeeper,
 		tracer,
+		app.ExtendPrecompiles,
 	)
 
 	// Create IBC Keeper
@@ -733,6 +736,10 @@ func (app *EthermintApp) RegisterTxService(clientCtx client.Context) {
 
 func (app *EthermintApp) RegisterTendermintService(clientCtx client.Context) {
 	tmservice.RegisterTendermintService(app.BaseApp.GRPCQueryRouter(), clientCtx, app.interfaceRegistry)
+}
+
+func (app *EthermintApp) ExtendPrecompiles() map[common.Address]vm.PrecompiledContract {
+	return map[common.Address]vm.PrecompiledContract{}
 }
 
 // RegisterSwaggerAPI registers swagger route with API Server

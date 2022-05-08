@@ -93,7 +93,19 @@ func (k *Keeper) NewEVM(
 		tracer = k.Tracer(ctx, msg, cfg.ChainConfig)
 	}
 	vmConfig := k.VMConfig(ctx, msg, cfg, tracer)
-	return vm.NewEVM(blockCtx, txCtx, stateDB, cfg.ChainConfig, vmConfig)
+
+	rules := cfg.ChainConfig.Rules(
+		blockCtx.BlockNumber,
+		cfg.ChainConfig.MergeForkBlock != nil,
+	)
+	precompiles := vm.GetPrecompiles(rules)
+
+	for k, v := range k.GetPrecompilesExtended() {
+		precompiles[k] = v
+	}
+
+	return vm.NewEVM(blockCtx, txCtx, stateDB, cfg.ChainConfig, vmConfig, precompiles)
+
 }
 
 // VMConfig creates an EVM configuration from the debug setting and the extra EIPs enabled on the

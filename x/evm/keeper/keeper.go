@@ -53,6 +53,9 @@ type Keeper struct {
 
 	// EVM Hooks for tx post-processing
 	hooks types.EvmHooks
+
+	// Precompile extensions
+	GetPrecompilesExtended func() map[common.Address]vm.PrecompiledContract
 }
 
 // NewKeeper generates new evm module keeper
@@ -62,6 +65,7 @@ func NewKeeper(
 	ak types.AccountKeeper, bankKeeper types.BankKeeper, sk types.StakingKeeper,
 	fmk types.FeeMarketKeeper,
 	tracer string,
+	pext func() map[common.Address]vm.PrecompiledContract,
 ) *Keeper {
 	// ensure evm module account is set
 	if addr := ak.GetModuleAddress(types.ModuleName); addr == nil {
@@ -75,15 +79,16 @@ func NewKeeper(
 
 	// NOTE: we pass in the parameter space to the CommitStateDB in order to use custom denominations for the EVM operations
 	return &Keeper{
-		cdc:             cdc,
-		paramSpace:      paramSpace,
-		accountKeeper:   ak,
-		bankKeeper:      bankKeeper,
-		stakingKeeper:   sk,
-		feeMarketKeeper: fmk,
-		storeKey:        storeKey,
-		transientKey:    transientKey,
-		tracer:          tracer,
+		cdc:                    cdc,
+		paramSpace:             paramSpace,
+		accountKeeper:          ak,
+		bankKeeper:             bankKeeper,
+		stakingKeeper:          sk,
+		feeMarketKeeper:        fmk,
+		storeKey:               storeKey,
+		transientKey:           transientKey,
+		tracer:                 tracer,
+		GetPrecompilesExtended: pext,
 	}
 }
 
