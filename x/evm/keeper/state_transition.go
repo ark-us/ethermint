@@ -100,7 +100,7 @@ func (k *Keeper) NewEVM(
 	)
 	precompiles := vm.GetPrecompiles(rules)
 
-	for k, v := range k.GetPrecompilesExtended() {
+	for k, v := range k.GetPrecompilesExtended(ctx) {
 		precompiles[k] = v
 	}
 

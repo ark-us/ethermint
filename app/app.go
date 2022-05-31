@@ -738,7 +738,7 @@ func (app *EthermintApp) RegisterTendermintService(clientCtx client.Context) {
 	tmservice.RegisterTendermintService(app.BaseApp.GRPCQueryRouter(), clientCtx, app.interfaceRegistry)
 }
 
-func (app *EthermintApp) ExtendPrecompiles() map[common.Address]vm.PrecompiledContract {
+func (app *EthermintApp) ExtendPrecompiles(ctx sdk.Context) map[common.Address]vm.PrecompiledContract {
 	return map[common.Address]vm.PrecompiledContract{}
 }
 

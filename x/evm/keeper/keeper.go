@@ -55,7 +55,7 @@ type Keeper struct {
 	hooks types.EvmHooks
 
 	// Precompile extensions
-	GetPrecompilesExtended func() map[common.Address]vm.PrecompiledContract
+	GetPrecompilesExtended func(ctx sdk.Context) map[common.Address]vm.PrecompiledContract
 }
 
 // NewKeeper generates new evm module keeper
@@ -65,7 +65,7 @@ func NewKeeper(
 	ak types.AccountKeeper, bankKeeper types.BankKeeper, sk types.StakingKeeper,
 	fmk types.FeeMarketKeeper,
 	tracer string,
-	pext func() map[common.Address]vm.PrecompiledContract,
+	pext func(ctx sdk.Context) map[common.Address]vm.PrecompiledContract,
 ) *Keeper {
 	// ensure evm module account is set
 	if addr := ak.GetModuleAddress(types.ModuleName); addr == nil {
