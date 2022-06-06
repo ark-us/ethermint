@@ -141,6 +141,9 @@ func (tx *DynamicFeeTx) GetValue() *big.Int {
 // GetNonce returns the account sequence for the transaction.
 func (tx *DynamicFeeTx) GetNonce() uint64 { return tx.Nonce }
 
+// SetNonce sets the account sequence for the transaction.
+func (tx *DynamicFeeTx) SetNonce(nonce uint64) { tx.Nonce = nonce }
+
 // GetTo returns the pointer to the recipient address.
 func (tx *DynamicFeeTx) GetTo() *common.Address {
 	if tx.To == "" {

@@ -126,6 +126,9 @@ func (tx *AccessListTx) GetValue() *big.Int {
 // GetNonce returns the account sequence for the transaction.
 func (tx *AccessListTx) GetNonce() uint64 { return tx.Nonce }
 
+// SetNonce sets the account sequence for the transaction.
+func (tx *AccessListTx) SetNonce(nonce uint64) { tx.Nonce = nonce }
+
 // GetTo returns the pointer to the recipient address.
 func (tx *AccessListTx) GetTo() *common.Address {
 	if tx.To == "" {

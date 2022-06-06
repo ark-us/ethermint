@@ -24,6 +24,7 @@ type TxData interface {
 	GetAccessList() ethtypes.AccessList
 	GetData() []byte
 	GetNonce() uint64
+	SetNonce(uint64)
 	GetGas() uint64
 	GetGasPrice() *big.Int
 	GetGasTipCap() *big.Int
